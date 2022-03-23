@@ -69,4 +69,9 @@ public class Cluster {
         record.setConsider(false);
         this.medianFrames = this.dtw.calculateMedianFrames(this.medianFrames, record);
     }
+
+    public int compareTo(Cluster otherCluster) {
+        return Integer.compare(this.id, otherCluster.getId());
+        // (this.id < otherCluster.getId()) ? -1 : ((this.id == otherCluster.getId()) ? 0 : 1);
+    }
 }
