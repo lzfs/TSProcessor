@@ -1,7 +1,7 @@
 package utility;
 
-import model.KinectFrame;
-import model.KinectRecord;
+import model.FrameImpl;
+import model.RecordImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,36 +14,36 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KinectDataReader implements Reader {
-    private final static Logger LOGGER = Logger.getLogger("KinectDataReaderLogger");
-    private List<KinectRecord> records = new ArrayList<>();
+public class DataReader implements Reader {
+    private final static Logger LOGGER = Logger.getLogger("DataReaderLogger");
+    private List<RecordImpl> records = new ArrayList<>();
     private final String prefix;
     private final String seperator;
     List<String> attributes;
 
-    public KinectDataReader(String prefix, String seperator, List<String> attributes) {
+    public DataReader(String prefix, String seperator, List<String> attributes) {
         this.prefix = prefix;
         this.seperator = seperator;
         this.attributes = attributes;
     }
 
     @Override
-    public List<KinectRecord> read(String path) {
+    public List<RecordImpl> read(String path) {
         listFiles(new File(prefix + path));
         return this.records;
     }
 
     private void listFiles(final File directory) {
         for (File file : Objects.requireNonNull(directory.listFiles())) {
-            KinectRecord record = new KinectRecord(file.getName(), true);
-            List<KinectFrame> frames = readFrames(file, record);
+            RecordImpl record = new RecordImpl(file.getName(), true);
+            List<FrameImpl> frames = readFrames(file, record);
             record.setFrames(frames);
             this.records.add(record);
         }
     }
 
-    private List<KinectFrame> readFrames(File file, KinectRecord record) {
-        List<KinectFrame> frames = new ArrayList<>();
+    private List<FrameImpl> readFrames(File file, RecordImpl record) {
+        List<FrameImpl> frames = new ArrayList<>();
 
         try {
             Scanner scanner = new Scanner(file);
@@ -55,7 +55,7 @@ public class KinectDataReader implements Reader {
                 for (String attribute : this.attributes) {
                     attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);
                 }
-                frames.add(new KinectFrame(attributesMap, record));
+                frames.add(new FrameImpl(attributesMap, record));
             }
             scanner.close();
         }

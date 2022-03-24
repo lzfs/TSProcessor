@@ -1,6 +1,6 @@
 package utility;
 
-import model.KinectCluster;
+import model.ClusterImpl;
 import model.Record;
 
 import java.io.File;
@@ -11,20 +11,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KinectClusterWriter implements Writer<KinectCluster> {
+public class ClusterWriter implements Writer<ClusterImpl> {
 
-    private final static Logger LOGGER = Logger.getLogger("KinectClusterWriterLogger");
+    private final static Logger LOGGER = Logger.getLogger("ClusterWriterLogger");
 
     @Override
-    public void write(String path, List<KinectCluster> kinectClusters) {
+    public void write(String path, List<ClusterImpl> clusterImpls) {
         try {
             File output = new File(path + "clusters.txt");
             output.createNewFile();
             FileWriter writer = new FileWriter(output);
 
-            for (KinectCluster kinectCluster : kinectClusters) {
-                writer.write(kinectCluster.getId() + "\n");
-                for (Record record : kinectCluster.getComponents()) {
+            for (ClusterImpl clusterImpl : clusterImpls) {
+                writer.write(clusterImpl.getId() + "\n");
+                for (Record record : clusterImpl.getComponents()) {
                     writer.write(record.getName() + "\n");
                 }
                 writer.write("----------------" + "\n");

@@ -3,17 +3,17 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KinectFrame implements Frame<KinectRecord> {
-    private KinectRecord record;
+public class FrameImpl implements Frame<RecordImpl> {
+    private RecordImpl record;
     private Map<String, String> attributes = new HashMap<>();
 
-    public KinectFrame(Map<String, String> attributesMap, KinectRecord record) {
+    public FrameImpl(Map<String, String> attributesMap, RecordImpl record) {
         this.attributes = attributesMap;
         this.record = record;
     }
 
     @Override
-    public KinectRecord getRecord() {
+    public RecordImpl getRecord() {
         return record;
     }
 

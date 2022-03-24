@@ -1,6 +1,6 @@
 package model;
 
-import calculating.metric.KinectDtw;
+import calculating.metric.Dtw;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class KinectCluster implements Cluster<KinectCluster, KinectFrame, KinectRecord> {
+public class ClusterImpl implements Cluster<ClusterImpl, FrameImpl, RecordImpl> {
     private int id = 1;
-    private List<KinectRecord> components = new ArrayList<>();
-    private List<KinectFrame> medianFrames;
+    private List<RecordImpl> components = new ArrayList<>();
+    private List<FrameImpl> medianFrames;
     private boolean consider;
-    private KinectDtw kinectDtw;
+    private Dtw dtw;
 
-    public KinectCluster(int id, KinectRecord component, KinectDtw kinectDtw) {
+    public ClusterImpl(int id, RecordImpl component, Dtw dtw) {
         this.id = id;
         this.components.add(component);
         this.medianFrames = component.getFrames();
         this.consider = true;
-        this.kinectDtw = kinectDtw;
+        this.dtw = dtw;
         component.setConsider(false);
     }
 
@@ -30,12 +30,12 @@ public class KinectCluster implements Cluster<KinectCluster, KinectFrame, Kinect
     }
 
     @Override
-    public List<KinectRecord> getComponents() {
+    public List<RecordImpl> getComponents() {
         return components;
     }
 
     @Override
-    public List<KinectFrame> getMedianFrames() {
+    public List<FrameImpl> getMedianFrames() {
         return medianFrames;
     }
 
@@ -50,24 +50,24 @@ public class KinectCluster implements Cluster<KinectCluster, KinectFrame, Kinect
     }
 
     @Override
-    public void mergeWithCluster(KinectCluster kinectCluster) {
-        this.components = Stream.of(this.components, kinectCluster.components)
+    public void mergeWithCluster(ClusterImpl clusterImpl) {
+        this.components = Stream.of(this.components, clusterImpl.components)
                                 .flatMap(Collection::stream)
                                 .collect(Collectors.toList());
-        kinectCluster.setConsider(false);
-        this.medianFrames = this.kinectDtw.calculateMedianFrames(this.medianFrames, kinectCluster);
+        clusterImpl.setConsider(false);
+        this.medianFrames = this.dtw.calculateMedianFrames(this.medianFrames, clusterImpl);
     }
 
     @Override
-    public void mergeWithRecord(KinectRecord record) {
+    public void mergeWithRecord(RecordImpl record) {
         this.components.add(record);
         record.setConsider(false);
-        this.medianFrames = this.kinectDtw.calculateMedianFrames(this.medianFrames, record);
+        this.medianFrames = this.dtw.calculateMedianFrames(this.medianFrames, record);
     }
 
     @Override
-    public int compareTo(KinectCluster otherKinectCluster) {
-        return Integer.compare(this.id, otherKinectCluster.getId());
+    public int compareTo(ClusterImpl otherClusterImpl) {
+        return Integer.compare(this.id, otherClusterImpl.getId());
         // (this.id < otherCluster.getId()) ? -1 : ((this.id == otherCluster.getId()) ? 0 : 1);
     }
 }

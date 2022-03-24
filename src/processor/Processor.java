@@ -1,12 +1,12 @@
 package processor;
 
-import calculating.cluster.KinectHierarchicalClustering;
-import model.KinectCluster;
-import model.KinectRecord;
-import utility.KinectClusterWriter;
+import calculating.cluster.HierarchicalClustering;
+import model.ClusterImpl;
+import model.RecordImpl;
+import utility.ClusterWriter;
 import utility.ConfigReader;
-import utility.KinectDataReader;
-import utility.KinectVisualizer;
+import utility.DataReader;
+import utility.VisualizerImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +21,8 @@ public class Processor {
     private static List<String> attributes;
     private static List<String> usedAttributes;
     private static String distanceFunction;
-    private static List<KinectRecord> data;
-    private static List<KinectCluster> kinectClusters;
+    private static List<RecordImpl> data;
+    private static List<ClusterImpl> clusterImpls;
 
     public static void main(String[] args) {
         ConfigReader configReader = new ConfigReader();
@@ -38,18 +38,18 @@ public class Processor {
 
 
         if (datasetType.equals("kinect")) {
-            KinectDataReader kinectDataReader = new KinectDataReader("D:", seperator, attributes);
-            data = kinectDataReader.read(inputPath);
+            DataReader dataReader = new DataReader("D:", seperator, attributes);
+            data = dataReader.read(inputPath);
 
-            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold, attributes, usedAttributes, distanceFunction);
-            kinectClusters = clustering.cluster();
+            HierarchicalClustering clustering = new HierarchicalClustering(data, threshold, attributes, usedAttributes, distanceFunction);
+            clusterImpls = clustering.cluster();
 
-            KinectClusterWriter writer = new KinectClusterWriter();
-            writer.write(outputPath, kinectClusters);
+            ClusterWriter writer = new ClusterWriter();
+            writer.write(outputPath, clusterImpls);
 
-            KinectVisualizer kinectVisualizer = new KinectVisualizer();
-            for (KinectCluster kinectCluster : kinectClusters) {
-                kinectVisualizer.visualize(kinectCluster.getId(), outputPath, kinectCluster.getMedianFrames());
+            VisualizerImpl visualizerImpl = new VisualizerImpl();
+            for (ClusterImpl clusterImpl : clusterImpls) {
+                visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl.getMedianFrames());
             }
         }
     }

@@ -1,6 +1,6 @@
 package utility;
 
-import model.KinectFrame;
+import model.FrameImpl;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -13,10 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class KinectVisualizer extends JComponent implements Visualizer<KinectFrame> {
+public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> {
 
     @Override
-    public void visualize(int id, String outputPath, List<KinectFrame> frames) {
+    public void visualize(int id, String outputPath, List<FrameImpl> frames) {
         BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphic = image.createGraphics();
 
@@ -24,8 +24,8 @@ public class KinectVisualizer extends JComponent implements Visualizer<KinectFra
         graphic.translate(130, 275);
         graphic.scale(40, 40);
 
-        KinectFrame oldFrame = frames.get(0);
-        for (KinectFrame frame : frames) {
+        FrameImpl oldFrame = frames.get(0);
+        for (FrameImpl frame : frames) {
             double x1 = -Double.parseDouble(oldFrame.getValue("x"));
             double z1 = -Double.parseDouble(oldFrame.getValue("z"));
             double x2 = -Double.parseDouble(frame.getValue("x"));

@@ -3,18 +3,18 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KinectRecord implements Record<KinectFrame> {
+public class RecordImpl implements Record<FrameImpl> {
     private String name;
-    private List<KinectFrame> frames;
+    private List<FrameImpl> frames;
     private boolean consider;
 
-    public KinectRecord(String name, List<KinectFrame> frames, boolean consider) {
+    public RecordImpl(String name, List<FrameImpl> frames, boolean consider) {
         this.name = name;
         this.frames = frames;
         this.consider = consider;
     }
 
-    public KinectRecord(String name, boolean consider) {
+    public RecordImpl(String name, boolean consider) {
         this.name = name;
         this.frames = new ArrayList<>();
         this.consider = consider;
@@ -25,12 +25,12 @@ public class KinectRecord implements Record<KinectFrame> {
     }
 
     @Override
-    public List<KinectFrame> getFrames() {
+    public List<FrameImpl> getFrames() {
         return frames;
     }
 
     @Override
-    public void setFrames(List<KinectFrame> frames) {
+    public void setFrames(List<FrameImpl> frames) {
         this.frames = frames;
     }
 
@@ -45,7 +45,7 @@ public class KinectRecord implements Record<KinectFrame> {
     }
 
     @Override
-    public void addFrame(KinectFrame frame) {
+    public void addFrame(FrameImpl frame) {
         this.frames.add(frame);
     }
 }
