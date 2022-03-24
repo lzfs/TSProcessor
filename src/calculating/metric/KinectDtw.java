@@ -10,9 +10,11 @@ import java.util.List;
 
 public class KinectDtw implements Metric<KinectRecord> {
     private List<String> usedAttributes;
+    private String distanceFunction;
 
-    public KinectDtw(List<String> usedAttributes) {
+    public KinectDtw(List<String> usedAttributes, String distanceFunction) {
         this.usedAttributes = usedAttributes;
+        this.distanceFunction = distanceFunction;
     }
 
     @Override
@@ -89,7 +91,16 @@ public class KinectDtw implements Metric<KinectRecord> {
 
         for (int i = 1; i < dtwMatrix.length; i++) {
             for (int j = 1; j < dtwMatrix[0].length; j++) {
-                double cost = Math.abs(s[i - 1] - t[j - 1]);
+                /*
+                you can use any distance function here
+                just add another else-if case with your function and put in into the config-file
+                 */
+                double cost;
+                if (this.distanceFunction.equals("other")) {
+                    cost = 0; // cost = someOtherFunction(s[i - 1], t[j - 1]);
+                } else {
+                    cost = Math.abs(s[i - 1] - t[j - 1]);// this is the default distance function
+                }
                 double minTmp = Math.min(dtwMatrix[i - 1][j], dtwMatrix[i][j - 1]);
                 double lastMin = Math.min(minTmp, dtwMatrix[i - 1][j - 1]);
                 dtwMatrix[i][j] = cost + lastMin;
