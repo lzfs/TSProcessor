@@ -1,5 +1,5 @@
 package model;
 
-public abstract class Frame {
-    Record record;
+public interface Frame<R extends Record> {
+    R getRecord();
 }

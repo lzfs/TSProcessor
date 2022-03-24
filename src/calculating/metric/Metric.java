@@ -1,8 +1,7 @@
 package calculating.metric;
 
-import model.KinectRecord;
+import model.Record;
 
-public interface Metric {
-
-    double calculateCost(KinectRecord record1, KinectRecord record2);
+public interface Metric<R extends Record> {
+    double calculateCost(R record1, R record2);
 }

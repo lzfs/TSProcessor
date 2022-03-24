@@ -1,35 +1,35 @@
 package utility;
 
-import model.Cluster;
+import model.KinectCluster;
 
 public class ClusterKey implements Comparable<ClusterKey> {
-    private Cluster cluster1;
-    private Cluster cluster2;
+    private KinectCluster kinectCluster1;
+    private KinectCluster kinectCluster2;
 
-    public ClusterKey(Cluster cluster1, Cluster cluster2) {
-        this.cluster1 = cluster1;
-        this.cluster2 = cluster2;
+    public ClusterKey(KinectCluster kinectCluster1, KinectCluster kinectCluster2) {
+        this.kinectCluster1 = kinectCluster1;
+        this.kinectCluster2 = kinectCluster2;
     }
 
-    public Cluster getCluster1() {
-        return cluster1;
+    public KinectCluster getCluster1() {
+        return kinectCluster1;
     }
 
-    public Cluster getCluster2() {
-        return cluster2;
+    public KinectCluster getCluster2() {
+        return kinectCluster2;
     }
 
     @Override
     public int hashCode() {
-        return cluster1.hashCode() + 31 * cluster2.hashCode();
+        return kinectCluster1.hashCode() + 31 * kinectCluster2.hashCode();
     }
 
     @Override
     public int compareTo(ClusterKey o) {
         if (o == this) return 0;
-        int i = cluster1.compareTo(o.cluster1);
+        int i = kinectCluster1.compareTo(o.kinectCluster1);
         if (i != 0) return i;
-        return cluster2.compareTo(o.cluster2);
+        return kinectCluster2.compareTo(o.kinectCluster2);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ClusterKey implements Comparable<ClusterKey> {
         if (o == this) return true;
         if (o == null || !(o instanceof ClusterKey)) return false;
         ClusterKey key = ClusterKey.class.cast(o);
-        return cluster1.equals(key.cluster1) && cluster2.equals(key.cluster2);
+        return kinectCluster1.equals(key.kinectCluster1) && kinectCluster2.equals(key.kinectCluster2);
     }
 }
 

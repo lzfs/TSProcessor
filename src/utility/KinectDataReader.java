@@ -7,22 +7,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TSReader implements Reader {
-    private final static Logger LOGGER = Logger.getLogger("TSReaderLogger");
+public class KinectDataReader implements Reader {
+    private final static Logger LOGGER = Logger.getLogger("KinectDataReaderLogger");
     private List<KinectRecord> records = new ArrayList<>();
+    private final String prefix;
+
+    public KinectDataReader(String prefix) {
+        this.prefix = prefix;
+    }
 
     @Override
     public List<KinectRecord> read(String path) {
-        listFiles(new File("D:" + path));
+        listFiles(new File(prefix + path));
         return this.records;
     }
 
     private void listFiles(final File directory) {
-        for (File file : directory.listFiles()) {
+        for (File file : Objects.requireNonNull(directory.listFiles())) {
             KinectRecord record = new KinectRecord(file.getName(), true);
             List<KinectFrame> frames = readFrames(file, record);
             record.setFrames(frames);

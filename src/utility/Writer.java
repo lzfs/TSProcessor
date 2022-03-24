@@ -4,7 +4,6 @@ import model.Cluster;
 
 import java.util.List;
 
-public interface Writer {
-
-    void write(String path, List<Cluster> clusters);
+public interface Writer<C extends Cluster> {
+    void write(String path, List<C> clusters);
 }

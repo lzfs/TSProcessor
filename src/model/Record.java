@@ -2,10 +2,11 @@ package model;
 
 import java.util.List;
 
-public abstract class Record {
-    String name;
-    List<Frame> frames;
-    boolean consider;
-
-    public abstract void addFrame(Frame frame);
+public interface Record<F extends Frame> {
+    void addFrame(F frame);
+    List<F> getFrames();
+    void setFrames(List<F> frames);
+    String getName();
+    boolean isConsider();
+    void setConsider(boolean consider);
 }

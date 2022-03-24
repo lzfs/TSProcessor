@@ -1,15 +1,12 @@
 package processor;
 
-import calculating.cluster.HierarchicalClustering;
-import calculating.metric.DTW;
-import model.Cluster;
-import model.KinectFrame;
+import calculating.cluster.KinectHierarchicalClustering;
+import model.KinectCluster;
 import model.KinectRecord;
-import model.Record;
-import utility.ClusterWriter;
+import utility.KinectClusterWriter;
 import utility.ConfigReader;
-import utility.TSReader;
-import utility.Visualizer;
+import utility.KinectDataReader;
+import utility.KinectVisualizer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +19,7 @@ public class Processor {
     private static double threshold;
     private static List<String> usedAttributes;
     private static List<KinectRecord> data;
-    private static List<Cluster> clusters;
+    private static List<KinectCluster> kinectClusters;
 
     public static void main(String[] args) {
         ConfigReader configReader = new ConfigReader();
@@ -33,18 +30,20 @@ public class Processor {
         threshold = Double.parseDouble(properties.getProperty("threshold"));
         usedAttributes = Arrays.asList(properties.getProperty("usedAttributes").split(","));
 
-        TSReader tsReader = new TSReader();
-        data = tsReader.read(inputPath);
+        if (datasetType.equals("kinect")) {
+            KinectDataReader kinectDataReader = new KinectDataReader("D:");
+            data = kinectDataReader.read(inputPath);
 
-        HierarchicalClustering clustering = new HierarchicalClustering(data, threshold);
-        clusters = clustering.cluster();
+            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold);
+            kinectClusters = clustering.cluster();
 
-        ClusterWriter writer = new ClusterWriter();
-        writer.write(outputPath, clusters);
+            KinectClusterWriter writer = new KinectClusterWriter();
+            writer.write(outputPath, kinectClusters);
 
-        Visualizer visualizer = new Visualizer();
-        for (Cluster cluster : clusters) {
-            visualizer.test(cluster.getId(), outputPath, cluster.getMedianFrames());
+            KinectVisualizer kinectVisualizer = new KinectVisualizer();
+            for (KinectCluster kinectCluster : kinectClusters) {
+                kinectVisualizer.visualize(kinectCluster.getId(), outputPath, kinectCluster.getMedianFrames());
+            }
         }
     }
 }

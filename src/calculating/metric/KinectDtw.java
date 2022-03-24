@@ -1,6 +1,6 @@
 package calculating.metric;
 
-import model.Cluster;
+import model.KinectCluster;
 import model.KinectFrame;
 import model.KinectRecord;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DTW implements Metric {
+public class KinectDtw implements Metric<KinectRecord> {
 
     @Override
     public double calculateCost(KinectRecord record1, KinectRecord record2) {
@@ -219,9 +219,9 @@ public class DTW implements Metric {
         return median1;
     }
 
-    public List<KinectFrame> calculateMedianFrames(List<KinectFrame> medianFrames, Cluster cluster) {
+    public List<KinectFrame> calculateMedianFrames(List<KinectFrame> medianFrames, KinectCluster kinectCluster) {
         List<KinectFrame> frames1 = medianFrames;
-        List<KinectFrame> frames2 = cluster.getMedianFrames();
+        List<KinectFrame> frames2 = kinectCluster.getMedianFrames();
 
         double[][] dtwMatrix1 = buildCostMatrix(frames1, frames2, 0);
 

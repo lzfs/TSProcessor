@@ -1,6 +1,6 @@
 package model;
 
-public class KinectFrame extends Frame {
+public class KinectFrame implements Frame<KinectRecord> {
     private String timestamp;
     private String kinectId;
     private String recordId;
@@ -19,12 +19,9 @@ public class KinectFrame extends Frame {
         this.record = record;
     }
 
+    @Override
     public KinectRecord getRecord() {
         return record;
-    }
-
-    public void setRecord(KinectRecord record) {
-        this.record = record;
     }
 
     public String getTimestamp() {
