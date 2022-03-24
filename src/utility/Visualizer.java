@@ -21,14 +21,14 @@ public class Visualizer extends JComponent {
 
         graphic.setStroke(new BasicStroke(0));
         graphic.translate(130, 275);
-        graphic.scale(20, 20);
+        graphic.scale(40, 40);
 
         KinectFrame oldFrame = frames.get(0);
         for (KinectFrame frame : frames) {
-            double x1 = -this.translate(oldFrame.getX(), 50);
-            double z1 = -this.translate(oldFrame.getZ(), 50);
-            double x2 = -this.translate(frame.getX(), 50);
-            double z2 = -this.translate(frame.getZ(), 50);
+            double x1 = -oldFrame.getX();
+            double z1 = -oldFrame.getZ();
+            double x2 = -frame.getX();
+            double z2 = -frame.getZ();
             Point2D point1 = new Point2D.Double(x1, z1);
             Point2D point2 = new Point2D.Double(x2, z2);
             Line2D line = new Line2D.Double(point1, point2);
@@ -43,13 +43,5 @@ public class Visualizer extends JComponent {
         }
         catch (IOException e) {}
     }
-
-    private double translate(double value, int maxValue) {
-        if (maxValue != 0) {
-            return (value * 100) / maxValue;
-        }
-        else {
-            return 0;
-        }
-    }
+    
 }
