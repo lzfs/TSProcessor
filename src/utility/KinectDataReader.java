@@ -6,7 +6,9 @@ import model.KinectRecord;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -16,9 +18,11 @@ public class KinectDataReader implements Reader {
     private final static Logger LOGGER = Logger.getLogger("KinectDataReaderLogger");
     private List<KinectRecord> records = new ArrayList<>();
     private final String prefix;
+    List<String> attributes;
 
-    public KinectDataReader(String prefix) {
+    public KinectDataReader(String prefix, List<String> attributes) {
         this.prefix = prefix;
+        this.attributes = attributes;
     }
 
     @Override
@@ -44,8 +48,11 @@ public class KinectDataReader implements Reader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split("#");
-                // 0 = timestamp, 1 = kinectId, 2 = recordId, 3 = x, 4 = z, 5 = engaged, 6 = record
-                frames.add(new KinectFrame(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], record));
+                Map<String, String> attributesMap = new HashMap<>();
+                for (String attribute : this.attributes) {
+                    attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);
+                }
+                frames.add(new KinectFrame(attributesMap, record));
             }
             scanner.close();
         }

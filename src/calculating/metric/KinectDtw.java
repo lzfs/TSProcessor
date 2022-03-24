@@ -6,13 +6,17 @@ import model.KinectRecord;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KinectDtw implements Metric<KinectRecord> {
+    private List<String> attributes;
     private List<String> usedAttributes;
     private String distanceFunction;
 
-    public KinectDtw(List<String> usedAttributes, String distanceFunction) {
+    public KinectDtw(List<String> attributes, List<String> usedAttributes, String distanceFunction) {
+        this.attributes = attributes;
         this.usedAttributes = usedAttributes;
         this.distanceFunction = distanceFunction;
     }
@@ -98,7 +102,8 @@ public class KinectDtw implements Metric<KinectRecord> {
                 double cost;
                 if (this.distanceFunction.equals("other")) {
                     cost = 0; // cost = someOtherFunction(s[i - 1], t[j - 1]);
-                } else {
+                }
+                else {
                     cost = Math.abs(s[i - 1] - t[j - 1]);// this is the default distance function
                 }
                 double minTmp = Math.min(dtwMatrix[i - 1][j], dtwMatrix[i][j - 1]);
@@ -137,13 +142,17 @@ public class KinectDtw implements Metric<KinectRecord> {
                 frame2 = frames2.get(m - 1);
             }
 
-            medianFrames.add(new KinectFrame(frame1.getValue("timestamp") + ";" + frame2.getValue("timestamp"),
-                                             frame1.getValue("kinectId") + ";" + frame2.getValue("kinectId"),
-                                             frame1.getValue("recordId") + ";" + frame2.getValue("recordId"),
-                                             String.valueOf((Double.parseDouble(frame1.getValue("x")) + Double.parseDouble(frame2.getValue("x"))) / 2),
-                                             String.valueOf((Double.parseDouble(frame1.getValue("z")) + Double.parseDouble(frame2.getValue("z"))) / 2),
-                                             frame1.getValue("engaged") + ";" + frame2.getValue("engaged"),
-                                             frame1.getRecord()));
+            Map<String, String> attributesMap = new HashMap<>();
+            for (String attribute : this.attributes) {
+                if (!usedAttributes.contains(attribute)) {
+                    attributesMap.put(attribute, frame1.getValue(attribute) + ";" + frame2.getValue(attribute));
+                }
+                else {
+                    attributesMap.put(attribute, String.valueOf((Double.parseDouble(frame1.getValue("x")) + Double.parseDouble(frame2.getValue("x"))) / 2));
+                }
+            }
+
+            medianFrames.add(new KinectFrame(attributesMap, frame1.getRecord()));
             // TODO should not just contain record from frame1
         }
         Collections.reverse(medianFrames);

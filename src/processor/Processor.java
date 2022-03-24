@@ -17,6 +17,7 @@ public class Processor {
     private static String outputPath;
     private static String datasetType;
     private static double threshold;
+    private static List<String> attributes;
     private static List<String> usedAttributes;
     private static String distanceFunction;
     private static List<KinectRecord> data;
@@ -29,15 +30,16 @@ public class Processor {
         outputPath = properties.getProperty("outputPath");
         datasetType = properties.getProperty("datasetType");
         threshold = Double.parseDouble(properties.getProperty("threshold"));
+        attributes = Arrays.asList(properties.getProperty("attributes").split(","));
         usedAttributes = Arrays.asList(properties.getProperty("usedAttributes").split(","));
         distanceFunction = properties.getProperty("distanceFunction");
 
 
         if (datasetType.equals("kinect")) {
-            KinectDataReader kinectDataReader = new KinectDataReader("D:");
+            KinectDataReader kinectDataReader = new KinectDataReader("D:", attributes);
             data = kinectDataReader.read(inputPath);
 
-            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold, usedAttributes, distanceFunction);
+            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold, attributes, usedAttributes, distanceFunction);
             kinectClusters = clustering.cluster();
 
             KinectClusterWriter writer = new KinectClusterWriter();

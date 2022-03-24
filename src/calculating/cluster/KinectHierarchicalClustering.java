@@ -15,16 +15,18 @@ public class KinectHierarchicalClustering implements ClusterAlgorithm<KinectClus
     private List<KinectRecord> initialRecords;
     private double threshold;
     private List<String> usedAttributes;
+    private List<String> attributes;
     private List<KinectCluster> kinectClusters = new ArrayList<>();
     private Map<ClusterKey, Double> calculatedCost = new HashMap<>();
     private final double minConst = 1.0E-3;
     private KinectDtw kinectDtw;
 
-    public KinectHierarchicalClustering(List<KinectRecord> initialRecords, double threshold, List<String> usedAttributes, String distanceFunction) {
+    public KinectHierarchicalClustering(List<KinectRecord> initialRecords, double threshold, List<String> attributes, List<String> usedAttributes, String distanceFunction) {
         this.initialRecords = initialRecords;
         this.threshold = threshold;
         this.usedAttributes = usedAttributes;
-        this.kinectDtw = new KinectDtw(usedAttributes, distanceFunction);
+        this.attributes = attributes;
+        this.kinectDtw = new KinectDtw(attributes, usedAttributes, distanceFunction);
     }
 
     @Override
