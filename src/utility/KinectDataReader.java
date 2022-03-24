@@ -18,10 +18,12 @@ public class KinectDataReader implements Reader {
     private final static Logger LOGGER = Logger.getLogger("KinectDataReaderLogger");
     private List<KinectRecord> records = new ArrayList<>();
     private final String prefix;
+    private final String seperator;
     List<String> attributes;
 
-    public KinectDataReader(String prefix, List<String> attributes) {
+    public KinectDataReader(String prefix, String seperator, List<String> attributes) {
         this.prefix = prefix;
+        this.seperator = seperator;
         this.attributes = attributes;
     }
 
@@ -47,7 +49,7 @@ public class KinectDataReader implements Reader {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] parts = line.split("#");
+                String[] parts = line.split(seperator);
                 Map<String, String> attributesMap = new HashMap<>();
                 for (String attribute : this.attributes) {
                     attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);

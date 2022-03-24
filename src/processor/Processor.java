@@ -15,6 +15,7 @@ import java.util.Properties;
 public class Processor {
     private static String inputPath;
     private static String outputPath;
+    private static String seperator;
     private static String datasetType;
     private static double threshold;
     private static List<String> attributes;
@@ -28,6 +29,7 @@ public class Processor {
         Properties properties = configReader.read(args[0]);
         inputPath = properties.getProperty("inputPath");
         outputPath = properties.getProperty("outputPath");
+        seperator = properties.getProperty("seperator");
         datasetType = properties.getProperty("datasetType");
         threshold = Double.parseDouble(properties.getProperty("threshold"));
         attributes = Arrays.asList(properties.getProperty("attributes").split(","));
@@ -36,7 +38,7 @@ public class Processor {
 
 
         if (datasetType.equals("kinect")) {
-            KinectDataReader kinectDataReader = new KinectDataReader("D:", attributes);
+            KinectDataReader kinectDataReader = new KinectDataReader("D:", seperator, attributes);
             data = kinectDataReader.read(inputPath);
 
             KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold, attributes, usedAttributes, distanceFunction);
