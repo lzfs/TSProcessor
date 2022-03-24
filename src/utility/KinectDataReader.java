@@ -49,6 +49,7 @@ public class KinectDataReader implements Reader {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
+                line = line.replaceAll(",", ".");
                 String[] parts = line.split(seperator);
                 Map<String, String> attributesMap = new HashMap<>();
                 for (String attribute : this.attributes) {
