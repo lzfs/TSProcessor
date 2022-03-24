@@ -18,12 +18,12 @@ public class DataReader implements Reader {
     private final static Logger LOGGER = Logger.getLogger("DataReaderLogger");
     private List<RecordImpl> records = new ArrayList<>();
     private final String prefix;
-    private final String seperator;
+    private final String separator;
     List<String> attributes;
 
-    public DataReader(String prefix, String seperator, List<String> attributes) {
+    public DataReader(String prefix, String separator, List<String> attributes) {
         this.prefix = prefix;
-        this.seperator = seperator;
+        this.separator = separator;
         this.attributes = attributes;
     }
 
@@ -50,7 +50,7 @@ public class DataReader implements Reader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 line = line.replaceAll(",", ".");
-                String[] parts = line.split(seperator);
+                String[] parts = line.split(separator);
                 Map<String, String> attributesMap = new HashMap<>();
                 for (String attribute : this.attributes) {
                     attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);
