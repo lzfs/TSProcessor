@@ -34,7 +34,7 @@ public class Processor {
             KinectDataReader kinectDataReader = new KinectDataReader("D:");
             data = kinectDataReader.read(inputPath);
 
-            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold);
+            KinectHierarchicalClustering clustering = new KinectHierarchicalClustering(data, threshold, usedAttributes);
             kinectClusters = clustering.cluster();
 
             KinectClusterWriter writer = new KinectClusterWriter();

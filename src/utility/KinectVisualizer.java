@@ -26,10 +26,10 @@ public class KinectVisualizer extends JComponent implements Visualizer<KinectFra
 
         KinectFrame oldFrame = frames.get(0);
         for (KinectFrame frame : frames) {
-            double x1 = -oldFrame.getX();
-            double z1 = -oldFrame.getZ();
-            double x2 = -frame.getX();
-            double z2 = -frame.getZ();
+            double x1 = -Double.parseDouble(oldFrame.getValue("x"));
+            double z1 = -Double.parseDouble(oldFrame.getValue("z"));
+            double x2 = -Double.parseDouble(frame.getValue("x"));
+            double z2 = -Double.parseDouble(frame.getValue("z"));
             Point2D point1 = new Point2D.Double(x1, z1);
             Point2D point2 = new Point2D.Double(x2, z2);
             Line2D line = new Line2D.Double(point1, point2);

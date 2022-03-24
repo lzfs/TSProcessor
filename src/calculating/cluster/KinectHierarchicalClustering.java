@@ -14,19 +14,22 @@ public class KinectHierarchicalClustering implements ClusterAlgorithm<KinectClus
     private static int id = 1;
     private List<KinectRecord> initialRecords;
     private double threshold;
+    private List<String> usedAttributes;
     private List<KinectCluster> kinectClusters = new ArrayList<>();
     private Map<ClusterKey, Double> calculatedCost = new HashMap<>();
     private final double minConst = 1.0E-3;
+    private KinectDtw kinectDtw;
 
-    public KinectHierarchicalClustering(List<KinectRecord> initialRecords, double threshold) {
+    public KinectHierarchicalClustering(List<KinectRecord> initialRecords, double threshold, List<String> usedAttributes) {
         this.initialRecords = initialRecords;
         this.threshold = threshold;
+        this.usedAttributes = usedAttributes;
+        this.kinectDtw = new KinectDtw(usedAttributes);
     }
 
     @Override
     public List<KinectCluster> cluster() {
         List<KinectCluster> result = new ArrayList<>();
-        KinectDtw kinectDtw = new KinectDtw();
         for (KinectRecord record : this.initialRecords) {
             this.kinectClusters.add(this.recordToCluster(record));
         }
@@ -37,8 +40,8 @@ public class KinectHierarchicalClustering implements ClusterAlgorithm<KinectClus
 
         do {
             // reset for next loop iteration
-            currentMinimumCost = kinectDtw.calculateCost(this.kinectClusters.get(0).getMedianFrames(), this.kinectClusters.get(1).getMedianFrames());
-            cost = kinectDtw.calculateCost(this.kinectClusters.get(0).getMedianFrames(), this.kinectClusters.get(1).getMedianFrames());
+            currentMinimumCost = this.kinectDtw.calculateCost(this.kinectClusters.get(0).getMedianFrames(), this.kinectClusters.get(1).getMedianFrames());
+            cost = this.kinectDtw.calculateCost(this.kinectClusters.get(0).getMedianFrames(), this.kinectClusters.get(1).getMedianFrames());
             mergeCandidate1 = 0;
             mergeCandidate2 = 1;
             for (KinectCluster kinectCluster1 : this.kinectClusters) {
@@ -48,7 +51,7 @@ public class KinectHierarchicalClustering implements ClusterAlgorithm<KinectClus
                             cost = this.calculatedCost.get(new ClusterKey(kinectCluster1, kinectCluster2));
                         }
                         else {
-                            cost = kinectDtw.calculateCost(kinectCluster1.getMedianFrames(), kinectCluster2.getMedianFrames());
+                            cost = this.kinectDtw.calculateCost(kinectCluster1.getMedianFrames(), kinectCluster2.getMedianFrames());
                             this.calculatedCost.put(new ClusterKey(kinectCluster1, kinectCluster2), cost);
                         }
                         if (cost <= currentMinimumCost) {
@@ -89,7 +92,7 @@ public class KinectHierarchicalClustering implements ClusterAlgorithm<KinectClus
 
     @Override
     public KinectCluster recordToCluster(KinectRecord record) {
-        this.id += 1;
-        return new KinectCluster(id, record);
+        id += 1;
+        return new KinectCluster(id, record, this.kinectDtw);
     }
 }

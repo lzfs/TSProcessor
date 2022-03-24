@@ -15,12 +15,12 @@ public class KinectCluster implements Cluster<KinectCluster, KinectFrame, Kinect
     private boolean consider;
     private KinectDtw kinectDtw;
 
-    public KinectCluster(int id, KinectRecord component) {
+    public KinectCluster(int id, KinectRecord component, KinectDtw kinectDtw) {
         this.id = id;
         this.components.add(component);
         this.medianFrames = component.getFrames();
         this.consider = true;
-        this.kinectDtw = new KinectDtw();
+        this.kinectDtw = kinectDtw;
         component.setConsider(false);
     }
 

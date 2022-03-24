@@ -44,6 +44,7 @@ public class KinectDataReader implements Reader {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split("#");
+                // 0 = timestamp, 1 = kinectId, 2 = recordId, 3 = x, 4 = z, 5 = engaged, 6 = record
                 frames.add(new KinectFrame(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], record));
             }
             scanner.close();
