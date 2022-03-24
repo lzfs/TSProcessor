@@ -148,7 +148,7 @@ public class KinectDtw implements Metric<KinectRecord> {
                     attributesMap.put(attribute, frame1.getValue(attribute) + ";" + frame2.getValue(attribute));
                 }
                 else {
-                    attributesMap.put(attribute, String.valueOf((Double.parseDouble(frame1.getValue("x")) + Double.parseDouble(frame2.getValue("x"))) / 2));
+                    attributesMap.put(attribute, String.valueOf((Double.parseDouble(frame1.getValue(attribute)) + Double.parseDouble(frame2.getValue(attribute))) / 2));
                 }
             }
 
