@@ -16,7 +16,7 @@ import java.util.List;
 public class Visualizer extends JComponent {
 
     public void test(int id, String outputPath, List<KinectFrame> frames) {
-        BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphic = image.createGraphics();
 
         graphic.setStroke(new BasicStroke(0));
