@@ -20,6 +20,7 @@ public class Processor {
     private static double threshold;
     private static List<String> attributes;
     private static List<String> usedAttributes;
+    private static boolean flipVisualization;
     private static String distanceFunction;
     private static List<RecordImpl> data;
     private static List<ClusterImpl> clusterImpls;
@@ -34,6 +35,7 @@ public class Processor {
         threshold = Double.parseDouble(properties.getProperty("threshold"));
         attributes = Arrays.asList(properties.getProperty("attributes").split(","));
         usedAttributes = Arrays.asList(properties.getProperty("usedAttributes").split(","));
+        flipVisualization = Boolean.parseBoolean(properties.getProperty("flipVisualization"));
         distanceFunction = properties.getProperty("distanceFunction");
 
 
@@ -47,7 +49,7 @@ public class Processor {
             ClusterWriter writer = new ClusterWriter();
             writer.write(outputPath, clusterImpls);
 
-            VisualizerImpl visualizerImpl = new VisualizerImpl();
+            VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization);
             for (ClusterImpl clusterImpl : clusterImpls) {
                 visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl.getMedianFrames());
             }

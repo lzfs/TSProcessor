@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> {
+    private boolean flipVisualization = false;
+
+    public VisualizerImpl(boolean flipVisualization) {
+        this.flipVisualization = flipVisualization;
+    }
 
     @Override
     public void visualize(int id, String outputPath, List<FrameImpl> frames) {
@@ -21,15 +26,25 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
         Graphics2D graphic = image.createGraphics();
 
         graphic.setStroke(new BasicStroke(0));
-        graphic.translate(130, 275);
+        if (flipVisualization) {
+            graphic.translate(130, 275);
+        } else {
+            graphic.translate(110, 275);
+        }
         graphic.scale(40, 40);
 
         FrameImpl oldFrame = frames.get(0);
         for (FrameImpl frame : frames) {
-            double x1 = -Double.parseDouble(oldFrame.getValue("x"));
+            double x1 = Double.parseDouble(oldFrame.getValue("x"));
             double z1 = -Double.parseDouble(oldFrame.getValue("z"));
-            double x2 = -Double.parseDouble(frame.getValue("x"));
+            double x2 = Double.parseDouble(frame.getValue("x"));
             double z2 = -Double.parseDouble(frame.getValue("z"));
+
+            if (flipVisualization) {
+                x1 = -x1;
+                x2 = -x2;
+            }
+
             Point2D point1 = new Point2D.Double(x1, z1);
             Point2D point2 = new Point2D.Double(x2, z2);
             Line2D line = new Line2D.Double(point1, point2);
@@ -44,5 +59,4 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
         }
         catch (IOException e) {}
     }
-
 }
