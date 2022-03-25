@@ -11,10 +11,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class implements the writer interface.
+ * It can be used to write a list of clusters to a specified file.
+ * It starts each entry with the index of the cluster,
+ * followed by all its components.
+ * The clusters are separated from each other with a horizontal line.
+ */
 public class ClusterWriter implements Writer<ClusterImpl> {
 
     private final static Logger LOGGER = Logger.getLogger("ClusterWriterLogger");
 
+    /**
+     * This method writes the clusters to the file.
+     *
+     * @param path         the destination path of the clusters text-file.
+     * @param clusterImpls the list of the clusters you want to write.
+     */
     @Override
     public void write(String path, List<ClusterImpl> clusterImpls) {
         try {

@@ -3,8 +3,18 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class implements the frame interface.
+ * It represents a frame with it parent record and its attributes.
+ */
 public class FrameImpl implements Frame<RecordImpl> {
+    /**
+     * The record this frame belongs to.
+     */
     private RecordImpl record;
+    /**
+     * The attributes this frame has.
+     */
     private Map<String, String> attributes = new HashMap<>();
 
     public FrameImpl(Map<String, String> attributesMap, RecordImpl record) {
@@ -17,6 +27,12 @@ public class FrameImpl implements Frame<RecordImpl> {
         return record;
     }
 
+    /**
+     * This method will return the value of a specified attribute.
+     *
+     * @param key the name of the attribute.
+     * @return the value of the attribute.
+     */
     public String getValue(String key) {
         return this.attributes.get(key);
     }

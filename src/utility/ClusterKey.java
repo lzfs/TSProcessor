@@ -2,8 +2,18 @@ package utility;
 
 import model.ClusterImpl;
 
+/**
+ * This class can be used as a key for a map.
+ * It consists of two clusters and implements all necessary methods for the comparison.
+ */
 public class ClusterKey implements Comparable<ClusterKey> {
+    /**
+     * The first cluster of the key.
+     */
     private ClusterImpl clusterImpl1;
+    /**
+     * The second cluster of the key.
+     */
     private ClusterImpl clusterImpl2;
 
     public ClusterKey(ClusterImpl clusterImpl1, ClusterImpl clusterImpl2) {
@@ -24,6 +34,14 @@ public class ClusterKey implements Comparable<ClusterKey> {
         return clusterImpl1.hashCode() + 31 * clusterImpl2.hashCode();
     }
 
+    /**
+     * This method is necessary to compare two clusterKeys.
+     * It will use {@link model.Cluster#compareTo(model.Cluster)} to compare them.
+     *
+     * @param o the other clusterKey you want to compare this one to.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     */
     @Override
     public int compareTo(ClusterKey o) {
         if (o == this) return 0;

@@ -3,9 +3,22 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the record interface.
+ * It represents a record with a name and its frames.
+ */
 public class RecordImpl implements Record<FrameImpl> {
+    /**
+     * The name of the record.
+     */
     private String name;
+    /**
+     * The list of frames of the record.
+     */
     private List<FrameImpl> frames;
+    /**
+     * This attributes shows if this records should be considered in upcoming clustering steps.
+     */
     private boolean consider;
 
     public RecordImpl(String name, List<FrameImpl> frames, boolean consider) {
