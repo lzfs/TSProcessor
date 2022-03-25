@@ -21,6 +21,7 @@ public class Processor {
     private static List<String> attributes;
     private static List<String> usedAttributes;
     private static boolean flipVisualization;
+    private static String bodyIdParamName;
     private static String distanceFunction;
     private static List<RecordImpl> data;
     private static List<ClusterImpl> clusterImpls;
@@ -36,6 +37,7 @@ public class Processor {
         attributes = Arrays.asList(properties.getProperty("attributes").split(","));
         usedAttributes = Arrays.asList(properties.getProperty("usedAttributes").split(","));
         flipVisualization = Boolean.parseBoolean(properties.getProperty("flipVisualization"));
+        bodyIdParamName = properties.getProperty("bodyIdParamName");
         distanceFunction = properties.getProperty("distanceFunction");
 
 
@@ -49,7 +51,7 @@ public class Processor {
             ClusterWriter writer = new ClusterWriter();
             writer.write(outputPath, clusterImpls);
 
-            VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization);
+            VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization, bodyIdParamName);
             for (ClusterImpl clusterImpl : clusterImpls) {
                 visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl.getMedianFrames());
             }
