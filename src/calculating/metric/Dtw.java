@@ -23,13 +23,7 @@ public class Dtw implements Metric<RecordImpl> {
 
     @Override
     public double calculateCost(RecordImpl record1, RecordImpl record2) {
-        double cost = 0;
-        for (String attribute : this.usedAttributes) {
-            double[][] dtwMatrix = buildCostMatrix(record1.getFrames(), record2.getFrames(), attribute);
-            cost += calculatePathCost(dtwMatrix);
-        }
-
-        return cost / this.usedAttributes.size();
+        return calculateCost(record1.getFrames(), record2.getFrames());
     }
 
     public double calculateCost(List<FrameImpl> frames1, List<FrameImpl> frames2) {
