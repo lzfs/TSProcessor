@@ -1,6 +1,7 @@
 package calculating.metric;
 
 import model.ClusterImpl;
+import model.Frame;
 import model.FrameImpl;
 import model.RecordImpl;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * It can be used to calculate the cost between two records by using the dynamic time warping algorithm.
  * An explanation of this algorithm can be found in my bachelors thesis.
  */
-public class Dtw implements Metric<RecordImpl> {
+public class Dtw implements Metric<RecordImpl, FrameImpl> {
     /**
      * The list of attributes this dataset offers.
      */
@@ -56,6 +57,7 @@ public class Dtw implements Metric<RecordImpl> {
      * @param frames2 the second frame list.
      * @return the cost of the two frame lists.
      */
+    @Override
     public double calculateCost(List<FrameImpl> frames1, List<FrameImpl> frames2) {
         // start with cost 0 and add the cost of each value to it
         double cost = 0;
@@ -66,7 +68,6 @@ public class Dtw implements Metric<RecordImpl> {
             // calculate and add the cost of this attribute
             cost += calculatePathCost(dtwMatrix);
         }
-
         return cost / this.usedAttributes.size();
     }
 

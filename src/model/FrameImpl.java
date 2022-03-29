@@ -33,6 +33,7 @@ public class FrameImpl implements Frame<RecordImpl> {
      * @param key the name of the attribute.
      * @return the value of the attribute.
      */
+    @Override
     public String getValue(String key) {
         return this.attributes.get(key);
     }
