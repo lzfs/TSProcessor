@@ -59,11 +59,11 @@ public class Dtw implements Metric<RecordImpl, FrameImpl> {
      */
     @Override
     public double calculateCost(List<FrameImpl> frames1, List<FrameImpl> frames2) {
-        // start with cost 0 and add the cost of each value to it
+        // start with cost 0 and add the calculated cost of each attribute to it
         double cost = 0;
-        // calculate cost for all attributes
+        // calculate the cost for all attributes
         for (String attribute : this.usedAttributes) {
-            // build the cost matrix for this value
+            // build the cost matrix for this attribute
             double[][] dtwMatrix = buildCostMatrix(frames1, frames2, attribute);
             // calculate and add the cost of this attribute
             cost += calculatePathCost(dtwMatrix);
@@ -150,7 +150,7 @@ public class Dtw implements Metric<RecordImpl, FrameImpl> {
                     cost = 0; // cost = someOtherFunction(s[i - 1], t[j - 1]);
                 }
                 else {
-                    cost = Math.abs(s[i - 1] - t[j - 1]);// this is the default distance function
+                    cost = Math.abs(s[i - 1] - t[j - 1]); // this is the default distance function
                 }
                 // find the lowest of the three values and put the sum of this value and the cost in the matrix cell
                 double minTmp = Math.min(dtwMatrix[i - 1][j], dtwMatrix[i][j - 1]);

@@ -114,10 +114,10 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
             }
             // if the minimum cost is still below the threshold we can continue clustering
             if (currentMinimumCost < threshold && currentMinimumCost > this.minConst) {
-                // combining mergeCandidate1 and mergeCandidate2 has the lowest found cost
-                // these two should therefore be merged together
-                // merge cluster2 into cluster1 and updates the cluster list
-                // consider of cluster2 is set to false
+                /* combining mergeCandidate1 and mergeCandidate2 has the lowest found cost
+                these two should therefore be merged together
+                merge cluster2 into cluster1 and update the cluster list
+                consider of cluster2 is set to false */
                 this.clusterImpls.get(mergeCandidate1).mergeWithCluster(this.clusterImpls.get(mergeCandidate2));
 
                 // create copy of the map to avoid concurrentModificationException
