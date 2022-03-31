@@ -40,10 +40,16 @@ public class DataReader implements Reader {
      */
     List<String> attributes;
 
-    public DataReader(String prefix, String separator, List<String> attributes) {
+    /**
+     * Whether if every second frame should be ignored to increase performance.
+     */
+    private boolean skipFrames = false;
+
+    public DataReader(String prefix, String separator, List<String> attributes, boolean skipFrames) {
         this.prefix = prefix;
         this.separator = separator;
         this.attributes = attributes;
+        this.skipFrames = skipFrames;
     }
 
     /**
@@ -81,6 +87,7 @@ public class DataReader implements Reader {
      */
     private List<FrameImpl> readFrames(File file, RecordImpl record) {
         List<FrameImpl> frames = new ArrayList<>();
+        int counter = 0;
 
         try {
             Scanner scanner = new Scanner(file);
@@ -95,7 +102,18 @@ public class DataReader implements Reader {
                 for (String attribute : this.attributes) {
                     attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);
                 }
-                frames.add(new FrameImpl(attributesMap, record));
+                if (this.skipFrames) {
+                    if (counter < 1) {
+                        frames.add(new FrameImpl(attributesMap, record));
+                        counter += 1;
+                    }
+                    else {
+                        // skip this frame
+                        counter = 0;
+                    }
+                } else {
+                    frames.add(new FrameImpl(attributesMap, record));
+                }
             }
             scanner.close();
         }

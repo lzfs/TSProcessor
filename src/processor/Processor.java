@@ -39,6 +39,7 @@ public class Processor {
      * if the x-values are mirror inverted in this dataset.
      * attributeForBodyIdentification: The name of the parameter this dataset uses for the identification of different bodies.
      * distanceFunction: The name of the distance function you want to use.
+     * skipFrames: Whether if every second frame should be ignored to increase performance (this may lead to worse results).
      * You can implement new ones in {@link calculating.metric.Dtw} or any other implementation you might have.
      */
 
@@ -47,9 +48,10 @@ public class Processor {
      * Call it to start clustering.
      *
      * @param args args[0] should contain the path of the config-file.
-     *             args[1] should contain the prefix for the paths if necessary. e.g.: "D:".
+     *             args[1] should contain the prefix for the paths if necessary. e.g.: "D:" (colons cannot be used in config-file).
      */
     public static void main(String[] args) {
+        long start = System.nanoTime();
         // read the config attributes
         ConfigReader configReader = new ConfigReader();
         if (args[0] == null) {
@@ -96,8 +98,11 @@ public class Processor {
         // You can implement new ones in {@link calculating.metric.Dtw} or any other implementation you might have.
         String distanceFunction = properties.getProperty("distanceFunction");
 
+        // Whether if every second frame should be ignored to increase performance.
+        boolean skipFrames = Boolean.parseBoolean(properties.getProperty("skipFrames"));
+
         if (datasetType.equals("kinect")) {
-            DataReader dataReader = new DataReader(prefix, separator, attributes);
+            DataReader dataReader = new DataReader(prefix, separator, attributes, skipFrames);
 
             // This list contains all the records that where initially found in the data.
             List<RecordImpl> data = dataReader.read(inputPath);
@@ -117,5 +122,7 @@ public class Processor {
                 visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl);
             }
         }
+        long end = System.nanoTime();
+        System.out.println((end - start) / 1000000);
     }
 }
