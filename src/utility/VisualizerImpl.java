@@ -42,11 +42,11 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
     /**
      * The identifier of the bodyId in this dataset.
      */
-    private String bodyIdParamName = "none";
+    private String attributeForBodyIdentification = "none";
 
-    public VisualizerImpl(boolean flipVisualization, String bodyIdParamName, String prefix) {
+    public VisualizerImpl(boolean flipVisualization, String attributeForBodyIdentification, String prefix) {
         this.flipVisualization = flipVisualization;
-        this.bodyIdParamName = bodyIdParamName;
+        this.attributeForBodyIdentification = attributeForBodyIdentification;
         this.prefix = prefix;
     }
 
@@ -100,13 +100,13 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
         Graphics2D graphic = image.createGraphics();
 
         List<String> bodyIds = new ArrayList<>();
-        if (this.bodyIdParamName.equals("none")) {
+        if (this.attributeForBodyIdentification.equals("none")) {
             bodyIds.add("none"); // if there is no specifier for the bodyId -> treat it like there is only one person
         }
         else {
             // get all the bodyIds to display different running paths for different people
             for (FrameImpl frame : frames) {
-                bodyIds.add(frame.getValue(this.bodyIdParamName));
+                bodyIds.add(frame.getValue(this.attributeForBodyIdentification));
             }
         }
 
@@ -139,7 +139,7 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
 
                 // either there is just one person then there is nothing to consider
                 // but if there are multiple people you have to print the running paths individually so that they don't get connected
-                if (bodyId.equals("none") || (oldFrame.getValue(bodyIdParamName).equals(bodyId) && frame.getValue(bodyIdParamName).equals(bodyId))) {
+                if (bodyId.equals("none") || (oldFrame.getValue(attributeForBodyIdentification).equals(bodyId) && frame.getValue(attributeForBodyIdentification).equals(bodyId))) {
                     Point2D point1 = new Point2D.Double(x1, z1);
                     Point2D point2 = new Point2D.Double(x2, z2);
                     Line2D line = new Line2D.Double(point1, point2);
