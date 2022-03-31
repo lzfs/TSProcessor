@@ -38,7 +38,7 @@ public class DataReader implements Reader {
      * The attributes that this dataset provides.
      * e.g. [timestamp, kinectId, recordId, x, z, engaged].
      */
-    List<String> attributes;
+    private List<String> attributes;
 
     /**
      * Whether if every second frame should be ignored to increase performance.
