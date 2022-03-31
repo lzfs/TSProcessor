@@ -103,9 +103,11 @@ public class Processor {
             ClusterWriter writer = new ClusterWriter();
             writer.write(outputPath, clusterImpls);
 
-            VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization, bodyIdParamName);
+            VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization, bodyIdParamName, "D:");
             for (ClusterImpl clusterImpl : clusterImpls) {
-                visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl.getMedianFrames());
+                // use this visualize method if you want the visualization of the median of the cluster instead of the visualization for each record
+                // visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl.getMedianFrames());
+                visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl);
             }
         }
     }

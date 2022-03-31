@@ -1,6 +1,8 @@
 package utility;
 
+import model.ClusterImpl;
 import model.FrameImpl;
+import model.RecordImpl;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -11,8 +13,13 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class implements the Visualizer interface.
@@ -20,6 +27,13 @@ import java.util.List;
  * It is displayed as viewed from a bird's eye view.
  */
 public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> {
+
+    private final static Logger LOGGER = Logger.getLogger("VisualizerImplLogger");
+    /**
+     * The prefix of the path.
+     * e.g. "D:".
+     */
+    private final String prefix;
     /**
      * Some datasets deliver the x-values mirror inverted.
      * With this attribute you can mirror them so that they are displayed normal.
@@ -30,9 +44,10 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
      */
     private String bodyIdParamName = "none";
 
-    public VisualizerImpl(boolean flipVisualization, String bodyIdParamName) {
+    public VisualizerImpl(boolean flipVisualization, String bodyIdParamName, String prefix) {
         this.flipVisualization = flipVisualization;
         this.bodyIdParamName = bodyIdParamName;
+        this.prefix = prefix;
     }
 
     /**
@@ -44,6 +59,43 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
      */
     @Override
     public void visualize(int id, String outputPath, List<FrameImpl> frames) {
+        BufferedImage image = drawImage(frames);
+        try {
+            ImageIO.write(image, "png", new File(prefix + outputPath + id + ".png"));
+        }
+        catch (IOException e) {
+            LOGGER.log(Level.INFO, "io exception");
+        }
+    }
+
+    /**
+     * This method visualizes a cluster by creating a directory
+     * and visualizing all frames of the cluster in this directory.
+     *
+     * @param id          the id of the record. This will be the file name of the visualization.
+     * @param outputPath  the path of the directory you want to save the visualization in.
+     * @param clusterImpl the list cluster you want to visualize.
+     */
+    public void visualize(int id, String outputPath, ClusterImpl clusterImpl) {
+        String clusterPath = prefix + outputPath + id;
+        try {
+            Path path = Paths.get(clusterPath);
+            Files.createDirectory(path);
+        }
+        catch (IOException e) {}
+        for (RecordImpl record : clusterImpl.getComponents()) {
+            List<FrameImpl> frames = record.getFrames();
+            BufferedImage image = drawImage(frames);
+            try {
+                ImageIO.write(image, "png", new File(clusterPath + "/" + record.getName() + ".png"));
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.INFO, "io exception");
+            }
+        }
+    }
+
+    private BufferedImage drawImage(List<FrameImpl> frames) {
         BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphic = image.createGraphics();
 
@@ -99,9 +151,7 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
 
         this.paint(graphic);
         graphic.dispose();
-        try {
-            ImageIO.write(image, "png", new File("D:" + outputPath + id + ".png"));
-        }
-        catch (IOException e) {}
+
+        return image;
     }
 }
