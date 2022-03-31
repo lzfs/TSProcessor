@@ -21,6 +21,29 @@ import java.util.logging.Logger;
 public class ClusterWriter implements Writer<ClusterImpl> {
 
     private final static Logger LOGGER = Logger.getLogger("ClusterWriterLogger");
+    /**
+     * The type of dataset. Just used to write this information to the output file.
+     */
+    private String datasetType;
+    /**
+     * The threshold for clustering. Just used to write this information to the output file.
+     */
+    private double threshold;
+    /**
+     * The list of attributes this dataset offers. Just used to write this information to the output file.
+     */
+    private List<String> usedAttributes;
+    /**
+     * The name of the distance function you want to use. Just used to write this information to the output file.
+     */
+    private String distanceFunction;
+
+    public ClusterWriter(String datasetType, double threshold, List<String> usedAttributes, String distanceFunction) {
+        this.datasetType = datasetType;
+        this.threshold = threshold;
+        this.usedAttributes = usedAttributes;
+        this.distanceFunction = distanceFunction;
+    }
 
     /**
      * This method writes the clusters to the file.
@@ -34,6 +57,15 @@ public class ClusterWriter implements Writer<ClusterImpl> {
             File output = new File(path + "clusters.txt");
             output.createNewFile();
             FileWriter writer = new FileWriter(output);
+            writer.write("configuration: \n");
+            writer.write("datasetType: " + datasetType + "\n" +
+                         "threshold: " + threshold + "\n" + "usedAttributes: ");
+            for (String attribute : usedAttributes) {
+                writer.write(attribute + " ");
+            }
+            writer.write("\n");
+            writer.write("distanceFunction: " + distanceFunction);
+            writer.write("\n\n");
 
             for (ClusterImpl clusterImpl : clusterImpls) {
                 writer.write(clusterImpl.getId() + "\n");

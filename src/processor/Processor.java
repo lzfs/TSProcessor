@@ -107,7 +107,7 @@ public class Processor {
             // This list contains all the found clusters.
             List<ClusterImpl> clusterImpls = clustering.cluster();
 
-            ClusterWriter writer = new ClusterWriter();
+            ClusterWriter writer = new ClusterWriter(datasetType, threshold, usedAttributes, distanceFunction);
             writer.write(outputPath, clusterImpls);
 
             VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization, attributeForBodyIdentification, prefix);
