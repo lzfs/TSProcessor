@@ -38,11 +38,17 @@ public class ClusterWriter implements Writer<ClusterImpl> {
      */
     private String distanceFunction;
 
-    public ClusterWriter(String datasetType, double threshold, List<String> usedAttributes, String distanceFunction) {
+    /**
+     * Whether if every second frame should be ignored to increase performance. Just used to write this information to the output file.
+     */
+    private boolean skipFrames = false;
+
+    public ClusterWriter(String datasetType, double threshold, List<String> usedAttributes, String distanceFunction, boolean skipFrames) {
         this.datasetType = datasetType;
         this.threshold = threshold;
         this.usedAttributes = usedAttributes;
         this.distanceFunction = distanceFunction;
+        this.skipFrames = skipFrames;
     }
 
     /**
@@ -64,7 +70,7 @@ public class ClusterWriter implements Writer<ClusterImpl> {
                 writer.write(attribute + " ");
             }
             writer.write("\n");
-            writer.write("distanceFunction: " + distanceFunction);
+            writer.write("distanceFunction: " + distanceFunction + "\n" + "skipFrames: " + skipFrames);
             writer.write("\n\n");
 
             for (ClusterImpl clusterImpl : clusterImpls) {

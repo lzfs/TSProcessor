@@ -51,7 +51,6 @@ public class Processor {
      *             args[1] should contain the prefix for the paths if necessary. e.g.: "D:" (colons cannot be used in config-file).
      */
     public static void main(String[] args) {
-        long start = System.nanoTime();
         // read the config attributes
         ConfigReader configReader = new ConfigReader();
         if (args[0] == null) {
@@ -112,7 +111,7 @@ public class Processor {
             // This list contains all the found clusters.
             List<ClusterImpl> clusterImpls = clustering.cluster();
 
-            ClusterWriter writer = new ClusterWriter(datasetType, threshold, usedAttributes, distanceFunction);
+            ClusterWriter writer = new ClusterWriter(datasetType, threshold, usedAttributes, distanceFunction, skipFrames);
             writer.write(outputPath, clusterImpls);
 
             VisualizerImpl visualizerImpl = new VisualizerImpl(flipVisualization, attributeForBodyIdentification, prefix);
@@ -122,7 +121,5 @@ public class Processor {
                 visualizerImpl.visualize(clusterImpl.getId(), outputPath, clusterImpl);
             }
         }
-        long end = System.nanoTime();
-        System.out.println((end - start) / 1000000);
     }
 }
