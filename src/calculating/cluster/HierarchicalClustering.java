@@ -51,10 +51,6 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
      */
     private Map<ClusterKey, Double> calculatedCost = new HashMap<>();
     /**
-     * Lower bound constant.
-     */
-    private final double minConst = 1.0E-3;
-    /**
      * The used metric is stored in the here.
      * The hierarchical clustering will use the implementation of the dynamic time warping algorithm here.
      */
@@ -89,8 +85,8 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
         // do at least once
         do {
             // reset for next loop iteration
-            currentMinimumCost = this.dtw.calculateCost(this.clusterImpls.get(0).getMedianFrames(), this.clusterImpls.get(1).getMedianFrames());
             cost = this.dtw.calculateCost(this.clusterImpls.get(0).getMedianFrames(), this.clusterImpls.get(1).getMedianFrames());
+            currentMinimumCost = cost;
             mergeCandidate1 = 0;
             mergeCandidate2 = 1;
             for (ClusterImpl clusterImpl1 : this.clusterImpls) {
@@ -103,7 +99,7 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                             cost = this.dtw.calculateCost(clusterImpl1.getMedianFrames(), clusterImpl2.getMedianFrames());
                             this.calculatedCost.put(new ClusterKey(clusterImpl1, clusterImpl2), cost);
                         }
-                        if (cost <= currentMinimumCost) {
+                        if (cost < currentMinimumCost) {
                             // if you found a cost that is smaller than the current minimum cost this will be your new cost
                             currentMinimumCost = cost;
                             mergeCandidate1 = this.clusterImpls.indexOf(clusterImpl1);
@@ -112,8 +108,9 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                     }
                 }
             }
+            System.out.println("currentMinimumCost found: " + currentMinimumCost);
             // if the minimum cost is still below the threshold we can continue clustering
-            if (currentMinimumCost < threshold && currentMinimumCost > this.minConst) {
+            if (currentMinimumCost < threshold) {
                 /* combining mergeCandidate1 and mergeCandidate2 has the lowest found cost
                 these two should therefore be merged together
                 merge cluster2 into cluster1 and update the cluster list
@@ -135,7 +132,7 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                     }
                 }
             }
-        } while (currentMinimumCost < threshold && currentMinimumCost > this.minConst);
+        } while (currentMinimumCost < threshold);
         // clean up the list of found clusters by removing all clusters that shouldn't be considered anymore
         for (ClusterImpl clusterImpl : this.clusterImpls) {
             if (clusterImpl.isConsider()) {
