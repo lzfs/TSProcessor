@@ -72,7 +72,6 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
      */
     @Override
     public List<ClusterImpl> cluster() {
-        List<ClusterImpl> result = new ArrayList<>();
         // initialize each record as a cluster and add it to the clusters list
         for (RecordImpl record : this.initialRecords) {
             this.clusterImpls.add(this.recordToCluster(record));
@@ -81,6 +80,10 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
         double cost;
         int mergeCandidate1;
         int mergeCandidate2;
+
+        if (this.clusterImpls.size() < 2) {
+            throw new IllegalArgumentException("You need at least two clusters to start clustering");
+        }
 
         // do at least once
         do {
@@ -116,15 +119,15 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                 merge cluster2 into cluster1 and update the cluster list
                 consider of cluster2 is set to false */
                 this.clusterImpls.get(mergeCandidate1).mergeWithCluster(this.clusterImpls.get(mergeCandidate2));
+                this.clusterImpls.remove(this.clusterImpls.get(mergeCandidate2));
 
                 // create copy of the map to avoid concurrentModificationException
-                Map<ClusterKey, Double> calculatedCostCopy = new HashMap<>();
-                calculatedCostCopy.putAll(calculatedCost);
+                Map<ClusterKey, Double> calculatedCostCopy = new HashMap<>(calculatedCost);
 
                 // remove all calculated costs from the map that contain cluster1 because it changed
                 // and therefore all cost values with this cluster have to be calculated again
                 for (Map.Entry<ClusterKey, Double> entry : calculatedCostCopy.entrySet()) {
-                    // ignore mergeCandidate2 because the consider value of cluster2 is set to false
+                    // ignore mergeCandidate2 because it got removed from the list and the consider value of cluster2 is set to false
                     if (entry.getKey().getCluster1().getId() == mergeCandidate1) {
                         for (ClusterImpl clusterImpl : clusterImpls) {
                             calculatedCost.remove(new ClusterKey(this.clusterImpls.get(mergeCandidate1), clusterImpl));
@@ -132,14 +135,9 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                     }
                 }
             }
-        } while (currentMinimumCost < threshold);
-        // clean up the list of found clusters by removing all clusters that shouldn't be considered anymore
-        for (ClusterImpl clusterImpl : this.clusterImpls) {
-            if (clusterImpl.isConsider()) {
-                result.add(clusterImpl);
-            }
-        }
-        return result;
+        } while (currentMinimumCost < threshold && this.clusterImpls.size() > 1);
+
+        return this.clusterImpls;
     }
 
     /**
