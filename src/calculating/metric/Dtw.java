@@ -77,7 +77,7 @@ public class Dtw implements Metric<RecordImpl, FrameImpl> {
      * @param dtwMatrix the matrix to go through.
      * @return the lowest found cost.
      */
-    public double calculatePathCost(double[][] dtwMatrix) {
+    private double calculatePathCost(double[][] dtwMatrix) {
         int n = dtwMatrix.length - 1;
         int m = dtwMatrix[n - 1].length - 1;
         int pathCounter = 1;
