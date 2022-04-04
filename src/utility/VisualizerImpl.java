@@ -123,8 +123,10 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
         // print the running path of each person
         for (String bodyId : bodyIds) {
             FrameImpl oldFrame = frames.get(0);
-            for (int i = 1; !oldFrame.getValue(attributeForBodyIdentification).equals(bodyId); i++) {
-                oldFrame = frames.get(i);
+            if (!attributeForBodyIdentification.equals("none")) {
+                for (int i = 1; !oldFrame.getValue(attributeForBodyIdentification).equals(bodyId); i++) {
+                    oldFrame = frames.get(i);
+                }
             }
             for (FrameImpl frame : frames) {
                 double x1 = Double.parseDouble(oldFrame.getValue("x"));
