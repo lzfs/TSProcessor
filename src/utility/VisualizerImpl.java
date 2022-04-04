@@ -106,26 +106,26 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
         else {
             // get all the bodyIds to display different running paths for different people
             for (FrameImpl frame : frames) {
-                bodyIds.add(frame.getValue(this.attributeForBodyIdentification));
+                if (!bodyIds.contains(frame.getValue(this.attributeForBodyIdentification))) {
+                    bodyIds.add(frame.getValue(this.attributeForBodyIdentification));
+                }
             }
         }
 
         // fine stroke
         graphic.setStroke(new BasicStroke(0));
-        if (flipVisualization) {
-            // move the running path into the center of the image
-            graphic.translate(130, 275);
-        }
-        else {
-            // move the running path into the center of the image
-            graphic.translate(110, 275);
-        }
+        // move the running path into the center of the image
+        graphic.translate(120, 275);
+
         // make the running path appear bigger
         graphic.scale(40, 40);
 
         // print the running path of each person
         for (String bodyId : bodyIds) {
             FrameImpl oldFrame = frames.get(0);
+            for (int i = 1; !oldFrame.getValue(attributeForBodyIdentification).equals(bodyId); i++) {
+                oldFrame = frames.get(i);
+            }
             for (FrameImpl frame : frames) {
                 double x1 = Double.parseDouble(oldFrame.getValue("x"));
                 double z1 = -Double.parseDouble(oldFrame.getValue("z"));
@@ -139,13 +139,13 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
 
                 // either there is just one person then there is nothing to consider
                 // but if there are multiple people you have to print the running paths individually so that they don't get connected
-                if (bodyId.equals("none") || (oldFrame.getValue(attributeForBodyIdentification).equals(bodyId) && frame.getValue(attributeForBodyIdentification).equals(bodyId))) {
+                if (bodyId.equals("none") || ((oldFrame.getValue(attributeForBodyIdentification).equals(bodyId)) && (frame.getValue(attributeForBodyIdentification).equals(bodyId)))) {
                     Point2D point1 = new Point2D.Double(x1, z1);
                     Point2D point2 = new Point2D.Double(x2, z2);
                     Line2D line = new Line2D.Double(point1, point2);
                     graphic.draw(line);
+                    oldFrame = frame;
                 }
-                oldFrame = frame;
             }
         }
 
