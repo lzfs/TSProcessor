@@ -128,10 +128,8 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
                 // and therefore all cost values with this cluster have to be calculated again
                 for (Map.Entry<ClusterKey, Double> entry : calculatedCostCopy.entrySet()) {
                     // ignore mergeCandidate2 because it got removed from the list and the consider value of cluster2 is set to false
-                    if (entry.getKey().getCluster1().getId() == mergeCandidate1) {
-                        for (ClusterImpl clusterImpl : clusterImpls) {
-                            calculatedCost.remove(new ClusterKey(this.clusterImpls.get(mergeCandidate1), clusterImpl));
-                        }
+                    if (entry.getKey().getCluster1().getId() == mergeCandidate1 || entry.getKey().getCluster2().getId() == mergeCandidate1) {
+                        calculatedCost.remove(entry.getKey());
                     }
                 }
             }
