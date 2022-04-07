@@ -103,7 +103,7 @@ public class DataReader implements Reader {
                     attributesMap.put(attribute, parts[this.attributes.indexOf(attribute)]);
                 }
                 if (this.skipFrames) {
-                    if (counter < 1) {
+                    if (counter < 2) {
                         frames.add(new FrameImpl(attributesMap, record));
                         counter += 1;
                     }
