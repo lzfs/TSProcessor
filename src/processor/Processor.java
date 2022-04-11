@@ -79,7 +79,7 @@ public class Processor {
         // If the cost is greater than this threshold the clustering will be terminated.
         double threshold = Double.parseDouble(properties.getProperty("threshold"));
 
-        //The list of attributes this dataset offers.
+        // The list of attributes this dataset offers.
         List<String> attributes = Arrays.asList(properties.getProperty("attributes").split(","));
 
         // The subset of attributes you want to consider for the cost calculation.
@@ -97,7 +97,7 @@ public class Processor {
         // You can implement new ones in {@link calculating.metric.Dtw} or any other implementation you might have.
         String distanceFunction = properties.getProperty("distanceFunction");
 
-        // Whether if every second frame should be ignored to increase performance.
+        // Whether if every third frame should be ignored to increase performance.
         boolean skipFrames = Boolean.parseBoolean(properties.getProperty("skipFrames"));
 
         if (datasetType.equals("kinect")) {
