@@ -6,6 +6,7 @@ package utility;
 public interface Reader {
     /**
      * This method can be used to read from a given direction and return the found object.
+     *
      * @param path the location to read from.
      * @return the found object.
      */

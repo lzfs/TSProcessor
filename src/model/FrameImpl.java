@@ -1,6 +1,5 @@
 package model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +14,7 @@ public class FrameImpl implements Frame<RecordImpl> {
     /**
      * The attributes this frame has.
      */
-    private Map<String, String> attributes = new HashMap<>();
+    private Map<String, String> attributes;
 
     public FrameImpl(Map<String, String> attributesMap, RecordImpl record) {
         this.attributes = attributesMap;

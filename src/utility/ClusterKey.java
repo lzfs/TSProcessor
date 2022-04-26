@@ -56,7 +56,7 @@ public class ClusterKey implements Comparable<ClusterKey> {
         if (o == null || !(o instanceof ClusterKey)) return false;
         ClusterKey key = ClusterKey.class.cast(o);
         return clusterImpl1.equals(key.clusterImpl1) && clusterImpl2.equals(key.clusterImpl2)
-                || clusterImpl1.equals(key.clusterImpl2) && clusterImpl2.equals(key.clusterImpl1);
+               || clusterImpl1.equals(key.clusterImpl2) && clusterImpl2.equals(key.clusterImpl1);
     }
 }
 

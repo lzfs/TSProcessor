@@ -1,7 +1,6 @@
 package calculating.metric;
 
 import model.ClusterImpl;
-import model.Frame;
 import model.FrameImpl;
 import model.RecordImpl;
 

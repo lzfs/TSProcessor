@@ -110,6 +110,5 @@ public class ClusterImpl implements Cluster<ClusterImpl, FrameImpl, RecordImpl> 
     @Override
     public int compareTo(ClusterImpl otherClusterImpl) {
         return Integer.compare(this.id, otherClusterImpl.getId());
-        // (this.id < otherCluster.getId()) ? -1 : ((this.id == otherCluster.getId()) ? 0 : 1);
     }
 }

@@ -141,12 +141,12 @@ public class HierarchicalClustering implements ClusterAlgorithm<ClusterImpl, Rec
     /**
      * This method transforms a record into a cluster.
      *
-     * @param record the record you want to transform.
+     * @param recordImpl the record you want to transform.
      * @return the newly created cluster.
      */
     @Override
-    public ClusterImpl recordToCluster(RecordImpl record) {
+    public ClusterImpl recordToCluster(RecordImpl recordImpl) {
         id += 1;
-        return new ClusterImpl(id, record, this.dtw);
+        return new ClusterImpl(id, recordImpl, this.dtw);
     }
 }

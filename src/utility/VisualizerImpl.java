@@ -38,11 +38,11 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
      * Some datasets deliver the x-values mirror inverted.
      * With this attribute you can mirror them so that they are displayed normal.
      */
-    private boolean flipVisualization = false;
+    private boolean flipVisualization;
     /**
      * The identifier of the bodyId in this dataset.
      */
-    private String attributeForBodyIdentification = "none";
+    private String attributeForBodyIdentification;
 
     public VisualizerImpl(boolean flipVisualization, String attributeForBodyIdentification, String prefix) {
         this.flipVisualization = flipVisualization;
@@ -150,7 +150,6 @@ public class VisualizerImpl extends JComponent implements Visualizer<FrameImpl> 
                 }
             }
         }
-
         this.paint(graphic);
         graphic.dispose();
 

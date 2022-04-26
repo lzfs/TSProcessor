@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * This interface should be implemented by all clusterAlgorithm classes.
  *
- * @param <C>the type of clusters this clustering algorithm will be working with.
- * @param <R>    the type of records this clustering algorithm will be working with.
+ * @param <C> the type of clusters this clustering algorithm will be working with.
+ * @param <R> the type of records this clustering algorithm will be working with.
  */
 public interface ClusterAlgorithm<C extends Cluster, R extends Record> {
     /**

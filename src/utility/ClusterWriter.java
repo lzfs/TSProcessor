@@ -41,7 +41,7 @@ public class ClusterWriter implements Writer<ClusterImpl> {
     /**
      * Whether if every second frame should be ignored to increase performance. Just used to write this information to the output file.
      */
-    private boolean skipFrames = false;
+    private boolean skipFrames;
 
     public ClusterWriter(String datasetType, double threshold, List<String> usedAttributes, String distanceFunction, boolean skipFrames) {
         this.datasetType = datasetType;

@@ -16,6 +16,7 @@ public class ConfigReader implements Reader {
 
     /**
      * This method reads a config-file a specified location.
+     *
      * @param path the location of the properties file.
      * @return a properties object with all the found attributes.
      */

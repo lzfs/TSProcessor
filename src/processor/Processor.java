@@ -39,7 +39,7 @@ public class Processor {
      * if the x-values are mirror inverted in this dataset.
      * attributeForBodyIdentification: The name of the parameter this dataset uses for the identification of different bodies.
      * distanceFunction: The name of the distance function you want to use.
-     * skipFrames: Whether if every second frame should be ignored to increase performance (this may lead to worse results).
+     * skipFrames: Whether if every third frame should be ignored to increase performance (this may lead to worse results).
      * You can implement new ones in {@link calculating.metric.Dtw} or any other implementation you might have.
      */
 

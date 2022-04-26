@@ -7,5 +7,6 @@ package model;
  */
 public interface Frame<R extends Record> {
     R getRecord();
+
     String getValue(String key);
 }

@@ -41,7 +41,7 @@ public class DataReader implements Reader {
     private List<String> attributes;
 
     /**
-     * Whether if every second frame should be ignored to increase performance.
+     * Whether if every third frame should be ignored to increase performance.
      */
     private boolean skipFrames = false;
 
@@ -111,7 +111,8 @@ public class DataReader implements Reader {
                         // skip this frame
                         counter = 0;
                     }
-                } else {
+                }
+                else {
                     frames.add(new FrameImpl(attributesMap, record));
                 }
             }
